@@ -1,14 +1,16 @@
-pub fn poll(fds: &mut [Pollfd], duration: Option<core::time::Duration>) -> std::io::Result<usize> {
+use crate::{Int};
+
+pub fn poll(fds: &mut [Pollfd], duration: Option<core::time::Duration>) -> std::io::Result<Int> {
     poll_impl(fds, duration)
 }
 
 #[cfg(target_os = "linux")]
-fn poll_impl(fds: &mut [Pollfd], duration: Option<core::time::Duration>) -> std::io::Result<usize> {
+fn poll_impl(fds: &mut [Pollfd], duration: Option<core::time::Duration>) -> std::io::Result<Int> {
     let res = unsafe {
         libc::poll(
             fds.as_mut_ptr(),
             1 as libc::nfds_t,
-            duration.map(|d| d.as_millis() as libc::c_int).unwrap_or(std::ptr::null_mut()),
+            duration.map(|d| d.as_millis() as Int).unwrap_or(std::ptr::null_mut()),
         )
     };
 
@@ -34,7 +36,7 @@ use crate::{
 };
 
 #[cfg(target_os = "macos")]
-fn poll_impl(fds: &mut [Pollfd], duration: Option<core::time::Duration>) -> std::io::Result<usize> {
+fn poll_impl(fds: &mut [Pollfd], duration: Option<core::time::Duration>) -> std::io::Result<Int> {
     let mut read_set = FdSet::new();
     let mut write_set = FdSet::new();
     let mut except_set = FdSet::new();
@@ -55,7 +57,7 @@ fn poll_impl(fds: &mut [Pollfd], duration: Option<core::time::Duration>) -> std:
     }
 
     let res = select(
-            (nfds + 1) as usize,
+            nfds + 1,
             &mut read_set,
             &mut write_set,
             &mut except_set,

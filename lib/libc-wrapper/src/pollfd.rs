@@ -1,24 +1,22 @@
 use std::os::fd::RawFd;
+use crate::Short;
 
-// c_short <-> i32
-type Poll = usize;
-
-pub const POLLIN: Poll = 0x1;
-pub const POLLOUT: Poll = 0x4;
-pub const POLLERR: Poll = 0x8;
+pub const POLLIN: Short = 0x1;
+pub const POLLOUT: Short = 0x4;
+pub const POLLERR: Short = 0x8;
 
 pub struct Pollfd {
     pub fd: RawFd,
-    pub events: Poll,
-    pub revents: Poll,
+    pub events: Short,
+    pub revents: Short,
 }
 
 impl Pollfd {
-    pub fn as_pollfd(&self) -> libc::pollfd {
+    pub fn as_libc_struct(&self) -> libc::pollfd {
         libc::pollfd {
             fd: self.fd,
-            events: self.events as libc::c_short,
-            revents: self.revents as libc::c_short,
+            events: self.events as Short,
+            revents: self.revents as Short,
         }
     }
 }

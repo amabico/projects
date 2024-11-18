@@ -1,0 +1,1 @@
+pub type Void = libc::c_void;

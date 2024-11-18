@@ -1,12 +1,13 @@
 use std::collections::HashMap;
 use std::sync::OnceLock;
+use libc_wrapper::{Int, sigaction, Sigaction,SIGWINCH, SIGINFO, write};
 
 struct Signal {
     action: Box<dyn Fn() -> ()>,
 }
 
 struct GlobalData {
-    signals: HashMap<libc::c_int, Signal>,
+    signals: HashMap<Int, Signal>,
 }
 
 static mut GLOBAL_DATA: OnceLock<GlobalData> = OnceLock::new();
@@ -21,13 +22,13 @@ impl GlobalData {
     }
 }
 
-extern "C" fn handler(sig: libc::c_int, _info: *mut libc::siginfo_t, _data: *mut libc::c_void) {
+extern "C" fn handler(sig: Int) {
     let global_data = GlobalData::get();
 
     (global_data.signals.get(&sig).unwrap().action)();
 }
 
-pub fn register<P>(signal: libc::c_int, pipe: P)
+pub fn register<P>(signal: Int, pipe: P)
 where
     P: std::os::fd::IntoRawFd + 'static + Sync + Send,
 {
@@ -35,7 +36,7 @@ where
 
     let action = move || {
         let data = b"X" as *const _ as *const _;
-        unsafe { libc::write(raw_fd, data, 1) };
+        write(raw_fd, data, 1);
     };
 
     let _ = GlobalData::get();
@@ -48,10 +49,10 @@ where
         )
     };
 
-    let mut new: libc::sigaction = unsafe { core::mem::zeroed() };
+    let mut new = Sigaction::new();
     new.sa_sigaction = handler as usize;
-    new.sa_flags = libc::SA_SIGINFO;
-    let mut old: libc::sigaction = unsafe { core::mem::zeroed() };
+    new.sa_flags = SIGINFO;
+    let old = Sigaction::new();
 
-    unsafe { libc::sigaction(libc::SIGWINCH, &new, &mut old) };
+    sigaction(SIGWINCH, &new, &old);
 }

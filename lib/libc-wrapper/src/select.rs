@@ -3,29 +3,29 @@
     ref: https://www.man7.org/linux/man-pages/man2/select.2.html
 */
 
-use crate::{FdSet, Timeval};
+use crate::{FdSet, Timeval, Int};
 use std::io::{Error, Result};
 
 pub fn select(
-    nfds: usize,
+    nfds: Int,
     read_set: &mut FdSet,
     write_set: &mut FdSet,
     except_set: &mut FdSet,
     timeout: Option<Timeval>,
-) -> Result<usize> {
+) -> Result<Int> {
     let res = unsafe {
         libc::select(
-            nfds as i32,
+            nfds,
             &mut read_set.set,
             &mut write_set.set,
             &mut except_set.set,
-            timeout.map(|timeval| &mut timeval.as_libc_val() as *mut _ as *mut libc::timeval).unwrap_or(std::ptr::null_mut()),
+            timeout.map(|timeval| &mut timeval.as_libc_struct() as *mut _ as *mut libc::timeval).unwrap_or(std::ptr::null_mut()),
         )
     };
 
     if res < 0 {
         Err(Error::last_os_error().into())
     } else {
-        Ok(res as usize)
+        Ok(res)
     }
 }
