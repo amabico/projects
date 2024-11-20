@@ -1,5 +1,6 @@
-use libc_wrapper::{poll, Pollfd, POLLIN};
+use libc_wrapper::{Pollfd, POLLIN};
 use std::io::Result;
+use std::time::Duration;
 
 use crate::unix::event_source::get_or_insert_event_source;
 use crate::unix::parser::parse;
@@ -32,7 +33,11 @@ pub fn read() -> Result<Option<Event>> {
     })
 }
 
-fn poll_impl(duration: Option<core::time::Duration>) -> Result<usize> {
+pub fn poll(duration: Duration) -> Result<bool> {
+    poll_impl(Some(duration)).map(|result| result != 0)
+}
+
+fn poll_impl(duration: Option<Duration>) -> Result<usize> {
     let event_source = get_or_insert_event_source();
     if event_source.is_err() { return Ok(0) };
     let event_source = event_source.unwrap();
@@ -52,7 +57,7 @@ fn poll_impl(duration: Option<core::time::Duration>) -> Result<usize> {
 
     let mut fds = [tty_pollfd, sig_winch_pollfd];
 
-    if poll(&mut fds, duration).is_err() {
+    if libc_wrapper::poll(&mut fds, duration).is_err() {
         let err = std::io::Error::last_os_error();
         match err.kind() {
             std::io::ErrorKind::Interrupted => return Ok(0),
