@@ -1,0 +1,8 @@
+[package]
+name = "terminal-events"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+libc-wrapper = { path = "../libc-wrapper" }
+signal-manipulator = { path = "../signal-manipulator" }

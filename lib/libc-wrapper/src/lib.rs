@@ -22,6 +22,21 @@ pub use sigaction::*;
 mod write;
 pub use write::*;
 
+mod isatty;
+pub use isatty::*;
+
+mod termios;
+pub use termios::*;
+
+mod tcgetattr;
+pub use tcgetattr::*;
+
+mod cfmakeraw;
+pub use cfmakeraw::*;
+
+mod tcsetattr;
+pub use tcsetattr::*;
+
 mod types;
 pub use types::*;
 
