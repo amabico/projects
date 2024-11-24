@@ -18,6 +18,7 @@ pub fn read() -> Result<Option<Event>> {
         if result == 1 {
             let mut buffer = [0u8; TTY_BUFFER_SIZE];
             let result = event_source.tty.read(&mut buffer).unwrap();
+            println!("{} {} {}", &buffer[0], &buffer[1], &buffer[2]);
             let key_code = parse(&buffer[..(result as usize)]);
             return key_code.map(|code| Some(Event::KeyPress(code))).unwrap_or(None);
         }

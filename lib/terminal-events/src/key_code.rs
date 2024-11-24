@@ -8,4 +8,5 @@ pub enum KeyCode {
     Home,
     End,
     F(u8),
+    Char(char),
 }
