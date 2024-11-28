@@ -1,0 +1,7 @@
+[package]
+name = "detect-terminal-event"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+terminal-events = { path = "../../lib/terminal-events" }
