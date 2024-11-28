@@ -21,7 +21,7 @@ export const head: DocumentHead = {
   meta: [
     {
       name: "description",
-      content: "amabi.co site description",
+      content: "Ecce, Homo?",
     },
   ],
 };
