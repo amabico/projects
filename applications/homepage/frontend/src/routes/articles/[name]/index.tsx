@@ -4,9 +4,11 @@ import { routeLoader$, type DocumentHead } from "@builder.io/qwik-city"
 import { unified } from "unified"
 import remarkParse from "remark-parse"
 import remarkFrontMatter from "remark-frontmatter"
+import type { Yaml } from "mdast"
 import { load } from "js-yaml"
 
 import { Markdown } from "~/components/markdown"
+
 const articles = import.meta.glob("../../../../articles/*.md", { query: "?raw" })
 
 export const useDocument = routeLoader$(async ({ params, fail }) => {
@@ -22,7 +24,7 @@ export const useDocument = routeLoader$(async ({ params, fail }) => {
     .parse(document)
 
   let title = null
-  const frontmatter = mdast.children.find(child => child.type === "yaml")
+  const frontmatter = mdast.children.find(child => child.type === "yaml") as Yaml | undefined
   if (frontmatter) {
     const metaValues = load(frontmatter.value) as { title?: string }
     title = metaValues.title
