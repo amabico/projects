@@ -40,7 +40,7 @@ export default component$(() => {
   const document = useDocument();
 
   return (
-    <div class="p-8">
+    <div class="py-8 px-16">
       { document.value.title && <h1 class="text-5xl mb-3">{document.value.title}</h1> }
       <Markdown document={document.value.content!} />
     </div>
