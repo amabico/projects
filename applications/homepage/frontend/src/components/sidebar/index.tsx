@@ -1,5 +1,6 @@
 import { component$, useSignal, useVisibleTask$, $, useOnDocument } from "@builder.io/qwik"
 import { Link } from "@builder.io/qwik-city";
+import AmabieEye from "../../../public/favicon.png?w=36&h=36&jsx"
 
 export const Sidebar = component$(() => {
   const ref = useSignal<HTMLElement>()
@@ -44,7 +45,9 @@ export const Sidebar = component$(() => {
           />
           <div class="m-5">
             <Link href="/" class="flex justify-center items-center">
-              <img src="favicon.png" class="invert" height={9} width={36} />
+              <div class="invert">
+                <AmabieEye />
+              </div>
             </Link>
             <nav class="mt-10 -m-5">
               <h3 class="text-center text-xl">お品書き</h3>
