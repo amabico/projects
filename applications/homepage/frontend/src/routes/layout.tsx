@@ -2,6 +2,8 @@ import { component$, Slot } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import type { RequestHandler } from "@builder.io/qwik-city";
 
+import { Sidebar } from "~/components/sidebar";
+
 export const onGet: RequestHandler = async ({ cacheControl }) => {
   cacheControl({
     staleWhileRevalidate: 60 * 60 * 24 * 7,
@@ -18,8 +20,11 @@ export const useServerTimeLoader = routeLoader$(() => {
 export default component$(() => {
   return (
     <>
-      <main>
-        <Slot />
+      <main class="flex">
+        <Sidebar />
+        <div class={ `transition-all linear duration-1000 w-full`}>
+          <Slot />
+        </div>
       </main>
     </>
   );
