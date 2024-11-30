@@ -18,7 +18,6 @@ export const Sidebar = component$(() => {
     } else {
       ref.value!.style.width = width.value.toString() + "px"
       dummyRef.value!.style.width = width.value.toString() + "px"
-      console.log(width.value.toString() + "px")
     }
   })
 
