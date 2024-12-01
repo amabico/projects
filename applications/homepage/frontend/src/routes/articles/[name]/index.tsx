@@ -9,7 +9,7 @@ import { load } from "js-yaml"
 
 import { Markdown } from "~/components/markdown"
 
-const articles = import.meta.glob("../../../../articles/*.md", { query: "?raw" })
+const articles = import.meta.glob("../../../../articles/**/*.md", { query: "?raw" })
 
 export const useDocument = routeLoader$(async ({ params, fail }) => {
   const filePath = Object.keys(articles).find((path: string) => path.includes(params.name))
@@ -50,7 +50,7 @@ export default component$(() => {
 export const head: DocumentHead = ({ resolveValue }) => {
   const document = resolveValue(useDocument)
   return {
-    title: `amabi.co | ${document.title}`,
+    title: document.title ? `amabi.co | ${document.title}` : "amabi.co",
     meta: [
       {
         name: "description",
