@@ -22,6 +22,6 @@ export const Code = component$<CodeProps>(({ node }) => {
     html.value =  await highlighter.codeToHtml(node.value, { lang: node.lang || "shell", theme: "nord" })
   })
   return (
-    <span dangerouslySetInnerHTML={html.value} />
+    <span class="break-all" dangerouslySetInnerHTML={html.value} />
   );
 });

@@ -8,10 +8,10 @@ import type { Yaml } from "mdast"
 import { load } from "js-yaml"
 import { Markdown } from "~/components/markdown"
 
-const articles = import.meta.glob("../../../articles/**/*.md", { query: "?raw" })
+const articles = import.meta.glob("../../articles/**/*.md", { query: "?raw" })
 const fileNames = Object.keys(articles).map(path => path.split("/")[path.split("/").length - 1]).map(file_name => file_name.split(".md")[0])
 
-export const useDocument = routeLoader$(async () => {
+export const useDocuments = routeLoader$(async () => {
   const documents = (await Promise.all(Object.values(articles).map(load => load()))).map((document: any) => document.default) as string[]
 
   const mdasts = await Promise.all(documents.map(document => unified()
@@ -29,7 +29,6 @@ export const useDocument = routeLoader$(async () => {
       title = metaValues.title
     }
 
-    
     return {
       fileName: fileNames[index].split("/")[fileNames[index].split("/").length - 1],
       title,
@@ -39,10 +38,10 @@ export const useDocument = routeLoader$(async () => {
 })
 
 export default component$(() => {
-  const documents = useDocument()
+  const documents = useDocuments()
 
   return (
-    <div class="py-8 px-16 w-full flex justify-center flex-col items-center">
+    <div class="my-8 w-full flex justify-center">
       <div class="w-4/6">
         <section class="mt-2 mb-10">
           <h1 class="text-primary text-5xl mb-5">記事一覧</h1>
@@ -52,8 +51,8 @@ export default component$(() => {
           {documents.value.map(({ fileName, title, document }, index) => (
             <li class="my-2" key={index}>
               <Link href={ `/articles/${fileName}` }>
-                <h3 class="text-3xl mb-1">{ title || fileName }</h3>
-                <div class="line-clamp-3 max-h-20 min-h-20 opacity-70" key={index}><Markdown document={document} /></div>
+                <h3 class="text-3xl mb-1 line-clamp-1">{ title || fileName }</h3>
+                <div class="line-clamp-3 max-h-22 min-h-22 opacity-70" key={index}><Markdown document={document} /></div>
                 <hr class="w-10/12 h-0.5 mx-auto my-4 bg-primary opacity-10 border-1 rounded" />
               </Link>
             </li>

@@ -7,5 +7,5 @@ interface ParagraphProps {
 }
 
 export const Paragraph = component$<ParagraphProps>(({ node }) => {
-  return <div class="my-2">{node.children.map((child, index) => <Child node={child} key={index} />)}</div>
+  return <div class="my-4">{node.children.map((child, index) => <Child node={child} key={index} />)}</div>
 })

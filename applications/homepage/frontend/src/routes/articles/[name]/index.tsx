@@ -9,15 +9,16 @@ import { load } from "js-yaml"
 
 import { Markdown } from "~/components/markdown"
 
-const articles = import.meta.glob("../../../../articles/**/*.md", { query: "?raw" })
+const articles = import.meta.glob("../../../articles/**/*.md", { query: "?raw" })
 
-export const useDocument = routeLoader$(async ({ params, fail }) => {
+export const useDocument = routeLoader$(async ({ params, send }) => {
   const filePath = Object.keys(articles).find((path: string) => path.includes(params.name))
   if (!filePath) {
-    return fail(404, {})
+    const response = await fetch(new URL("/404"))
+    send(response)
   }
 
-  const document = (await articles[filePath]() as any).default as string
+  const document = (await articles[filePath!]() as any).default as string
   const mdast = await unified()
     .use(remarkParse)
     .use(remarkFrontMatter)
@@ -40,15 +41,18 @@ export default component$(() => {
   const document = useDocument();
 
   return (
-    <div class="py-8 px-16">
-      { document.value.title && <h1 class="text-5xl mb-3">{document.value.title}</h1> }
-      <Markdown document={document.value.content!} />
+    <div class="my-8 flex justify-center">
+      <div class="w-4/6">
+        { document.value.title && <h1 class="text-5xl mb-4">{document.value.title}</h1> }
+        <Markdown document={document.value.content!} />
+      </div>
     </div>
   );
 });
 
 export const head: DocumentHead = ({ resolveValue }) => {
   const document = resolveValue(useDocument)
+
   return {
     title: document.title ? `amabi.co | ${document.title}` : "amabi.co",
     meta: [
