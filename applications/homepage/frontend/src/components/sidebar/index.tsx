@@ -5,7 +5,7 @@ import AmabieEye from "../../../public/favicon.png?w=36&h=36&jsx"
 export const Sidebar = component$(() => {
   const ref = useSignal<HTMLElement>()
   const dummyRef = useSignal<HTMLElement>()
-  const hidden = useSignal<boolean>(true)
+  const hidden = useSignal<boolean>(false)
   const width = useSignal<number>(300)
   const onResize = useSignal<boolean>(false)
 
@@ -42,17 +42,25 @@ export const Sidebar = component$(() => {
             onMouseDown$={() => onResize.value = true}
             onMouseUp$={() => onResize.value = false}
           />
-          <div class="m-5">
+          <div class="mx-5 h-full flex flex-col">
             <Link href="/" class="flex justify-center items-center">
-              <div class="invert">
+              <div class="invert pt-5">
                 <AmabieEye />
               </div>
             </Link>
-            <nav class="mt-10 -m-5">
+            <nav class="flex flex-col grow pt-10 -mx-5">
               <h3 class="text-center text-xl">お品書き</h3>
-              <ul class="mt-5">
+              <ul class="mt-5 grow">
                 <li class="hover:bg-blue-900">
-                  <Link class="block w-full px-5 text-center" href="/articles">記事一覧</Link>
+                  <Link class="block w-full px-5 text-center p-3" href="/articles">記事一覧</Link>
+                </li>
+                <li class="hover:bg-blue-900">
+                  <Link class="block w-full px-5 text-center p-3" href="/categories">カテゴリー</Link>
+                </li>
+              </ul>
+              <ul class="mt-auto my-5">
+                <li class="hover:bg-blue-900">
+                  <Link class="block w-full px-5 text-center p-3" href="/about">このページについて</Link>
                 </li>
               </ul>
             </nav>
@@ -60,7 +68,7 @@ export const Sidebar = component$(() => {
         </div>
         <div class="relative translate-y-5">
           <button onClick$={() => hidden.value = !hidden.value} class="transition duration-500 hover:scale-125 hover:-translate-y-1">
-            <div class={ `transition duration-500 absolute m-2 ${hidden.value ? "rotate-0" : "rotate-180" }` }>
+            <div class={ `transition duration-500 absolute m-2 ${ hidden.value ? "rotate-0" : "rotate-180" }` }>
               <div class="rotate-90 ">
                 <div class="rotate-45">
                   <div class="border-primary border-2 size-4">

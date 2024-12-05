@@ -1,6 +1,8 @@
 import { component$ } from "@builder.io/qwik"
 import { routeLoader$, type DocumentHead } from "@builder.io/qwik-city"
 
+import NotFound from "~/routes/404"
+
 import { unified } from "unified"
 import remarkParse from "remark-parse"
 import remarkFrontMatter from "remark-frontmatter"
@@ -11,11 +13,10 @@ import { Markdown } from "~/components/markdown"
 
 const articles = import.meta.glob("../../../articles/**/*.md", { query: "?raw" })
 
-export const useDocument = routeLoader$(async ({ params, send }) => {
+export const useDocument = routeLoader$(async ({ params, status }) => {
   const filePath = Object.keys(articles).find((path: string) => path.includes(params.name))
   if (!filePath) {
-    const response = await fetch(new URL("/404"))
-    send(response)
+    return status(404)
   }
 
   const document = (await articles[filePath!]() as any).default as string
@@ -38,7 +39,11 @@ export const useDocument = routeLoader$(async ({ params, send }) => {
 })
 
 export default component$(() => {
-  const document = useDocument();
+  const document = useDocument()
+
+  if (typeof document.value === "number") {
+    return <NotFound />
+  }
 
   return (
     <div class="my-8 flex justify-center">
@@ -52,6 +57,18 @@ export default component$(() => {
 
 export const head: DocumentHead = ({ resolveValue }) => {
   const document = resolveValue(useDocument)
+
+  if (typeof document === "number") {
+    return {
+      title: "amabi.co | Not Found",
+      meta: [
+        {
+          name: "description",
+          content: "Page not found.",
+        },
+      ]
+    }
+  }
 
   return {
     title: document.title ? `amabi.co | ${document.title}` : "amabi.co",
