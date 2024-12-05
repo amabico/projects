@@ -1,5 +1,5 @@
 import { component$ } from "@builder.io/qwik"
-import { Link, routeLoader$, useLocation, useNavigate, type DocumentHead } from "@builder.io/qwik-city"
+import { Link, routeLoader$, useLocation, type DocumentHead } from "@builder.io/qwik-city"
 
 import NotFound from "~/routes/404"
 
