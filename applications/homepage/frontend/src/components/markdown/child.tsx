@@ -8,6 +8,8 @@ import { Paragraph } from "./paragraph";
 import { InlineMath } from "./inlineMath";
 import { FootnoteReference } from "./footnote-reference";
 import { FootnoteDefinition } from "./footnote-definition";
+import { List } from "./list";
+import { ListItem } from "./listItem";
 
 interface ChildProps {
   node: RootContent,
@@ -29,6 +31,10 @@ export const Child = component$<ChildProps>(({ node, exclude }) => {
       return <InlineMath node={node} />
     case "yaml":
       return null
+    case "list":
+      return <List node={node} />
+    case "listItem":
+      return <ListItem node={node} />
     case "footnoteReference":
       return <FootnoteReference node={node} />
     case "footnoteDefinition":

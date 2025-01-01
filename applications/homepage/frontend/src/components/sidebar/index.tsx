@@ -5,7 +5,7 @@ import AmabieEye from "../../../public/favicon.png?w=36&h=36&jsx"
 export const Sidebar = component$(() => {
   const ref = useSignal<HTMLElement>()
   const dummyRef = useSignal<HTMLElement>()
-  const hidden = useSignal<boolean>(false)
+  const hidden = useSignal<boolean>(true)
   const width = useSignal<number>(300)
   const onResize = useSignal<boolean>(false)
 
