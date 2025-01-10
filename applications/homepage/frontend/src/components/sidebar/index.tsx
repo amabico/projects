@@ -54,9 +54,6 @@ export const Sidebar = component$(() => {
                 <li class="hover:bg-blue-900">
                   <Link class="block w-full px-5 text-center p-3" href="/articles">記事一覧</Link>
                 </li>
-                <li class="hover:bg-blue-900">
-                  <Link class="block w-full px-5 text-center p-3" href="/categories">カテゴリー</Link>
-                </li>
               </ul>
               <ul class="mt-auto my-5">
                 <li class="hover:bg-blue-900">

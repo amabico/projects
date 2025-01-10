@@ -48,7 +48,7 @@ export default component$(() => {
   return (
     <div class="my-8 flex justify-center">
       <div class="w-4/6">
-        { document.value.title && <h1 class="text-5xl mb-4">{document.value.title}</h1> }
+        { document.value.title && <h1 class="text-5xl mb-8">{document.value.title}</h1> }
         <Markdown document={document.value.content!} />
       </div>
     </div>
