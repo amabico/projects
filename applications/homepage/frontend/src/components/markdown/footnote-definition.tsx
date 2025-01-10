@@ -8,7 +8,7 @@ interface HeadingProps {
 
 export const FootnoteDefinition = component$<HeadingProps>(({ node }) => {
   return (
-    <div class="flex">
+    <div id={node.identifier} class="flex">
       <span class="mr-2">{node.label}:</span>
       <span>{ node.children.map((child, index) => <Child key={index} node={child} exclude={["paragraph"]} />) }</span>
     </div>

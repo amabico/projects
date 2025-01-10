@@ -10,6 +10,7 @@ import { FootnoteReference } from "./footnote-reference";
 import { FootnoteDefinition } from "./footnote-definition";
 import { List } from "./list";
 import { ListItem } from "./listItem";
+import { Image } from "./image";
 
 interface ChildProps {
   node: RootContent,
@@ -39,6 +40,8 @@ export const Child = component$<ChildProps>(({ node, exclude }) => {
       return <FootnoteReference node={node} />
     case "footnoteDefinition":
       return <FootnoteDefinition node={node} />
+    case "image":
+      return <Image node={node} />
     default:
       return JSON.stringify(node)
   }
