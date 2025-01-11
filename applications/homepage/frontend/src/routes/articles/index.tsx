@@ -10,10 +10,11 @@ import { Markdown } from "~/components/markdown"
 
 const articles = import.meta.glob("../../articles/**/*.md", { query: "?raw" })
 const fileNames = Object.keys(articles).map(path => path.split("/")[path.split("/").length - 1]).map(file_name => file_name.split(".md")[0])
+fileNames.sort().reverse()
 
 export const useDocuments = routeLoader$(async () => {
   const documents = (await Promise.all(Object.values(articles).map(load => load()))).map((document: any) => document.default) as string[]
-  documents.sort()
+  documents.sort().reverse()
 
   const mdasts = await Promise.all(documents.map(document => unified()
     .use(remarkParse)
