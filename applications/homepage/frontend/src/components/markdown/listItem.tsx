@@ -3,11 +3,12 @@ import type { ListItem as ListItemNode } from "mdast"
 import { Child } from "./child";
 
 interface ListItemProps {
-  node: ListItemNode
+  node: ListItemNode,
+  interactive: boolean
 }
 
-export const ListItem = component$<ListItemProps>(({ node }) => {
+export const ListItem = component$<ListItemProps>(({ node, interactive }) => {
   return (
-    <li>{ node.children.map((child, index) => <Child node={child} exclude={["paragraph"]} key={index} />) }</li>
+    <li>{ node.children.map((child, index) => <Child node={child} interactive={interactive} exclude={["paragraph"]} key={index} />) }</li>
   )
 });

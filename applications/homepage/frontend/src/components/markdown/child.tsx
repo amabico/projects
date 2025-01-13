@@ -14,32 +14,33 @@ import { Image } from "./image";
 
 interface ChildProps {
   node: RootContent,
+  interactive: boolean,
   exclude?: "paragraph"[]
 }
 
-export const Child = component$<ChildProps>(({ node, exclude }) => {
+export const Child = component$<ChildProps>(({ node, interactive, exclude }) => {
   switch(node.type) {
     case "paragraph":
-      if (exclude && exclude.includes("paragraph")) return node.children.map((child, index) => <Child node={child} key={index} />)
-      return <Paragraph node={node}/>
+      if (exclude && exclude.includes("paragraph")) return node.children.map((child, index) => <Child node={child} key={index} interactive={interactive} />)
+      return <Paragraph node={node} interactive={interactive} />
     case "heading":
-      return <Heading node={node}/>
+      return <Heading node={node} interactive={interactive} />
     case "text":
-      return <Text node={node}/>
+      return <Text node={node} />
     case "code":
-      return <Code node={node}/>
+      return <Code node={node} />
     case "inlineMath":
       return <InlineMath node={node} />
     case "yaml":
       return null
     case "list":
-      return <List node={node} />
+      return <List node={node} interactive={interactive} />
     case "listItem":
-      return <ListItem node={node} />
+      return <ListItem node={node} interactive={interactive} />
     case "footnoteReference":
-      return <FootnoteReference node={node} />
+      return <FootnoteReference node={node} interactive={interactive} />
     case "footnoteDefinition":
-      return <FootnoteDefinition node={node} />
+      return <FootnoteDefinition node={node} interactive={interactive} />
     case "image":
       return <Image node={node} />
     default:

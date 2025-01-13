@@ -3,9 +3,10 @@ import type { Paragraph as ParagraphNode } from "mdast";
 import { Child } from "./child";
 
 interface ParagraphProps {
-  node: ParagraphNode
+  node: ParagraphNode,
+  interactive: boolean
 }
 
-export const Paragraph = component$<ParagraphProps>(({ node }) => {
-  return <div class="my-4">{node.children.map((child, index) => <Child node={child} key={index} />)}</div>
+export const Paragraph = component$<ParagraphProps>(({ node, interactive }) => {
+  return <div class="my-4">{node.children.map((child, index) => <Child node={child} interactive={interactive} key={index} />)}</div>
 })

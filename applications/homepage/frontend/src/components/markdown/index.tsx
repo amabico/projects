@@ -10,10 +10,11 @@ import type { Root } from "mdast"
 import { Child } from "./child";
 
 interface MarkdownProps {
-  document: string
+  document: string,
+  interactive: boolean
 }
 
-export const Markdown = component$<MarkdownProps>(({ document }) => {
+export const Markdown = component$<MarkdownProps>(({ document, interactive = true }) => {
   const mdast = useSignal<Root>({ type: "root", children: [] })
 
   useTask$(async () => {
@@ -27,7 +28,7 @@ export const Markdown = component$<MarkdownProps>(({ document }) => {
 
   return (
     <>
-      { mdast.value.children.map((child, index) => <Child node={child} key={index} />) }
+      { mdast.value.children.map((child, index) => <Child node={child} interactive={interactive} key={index} />) }
     </>
   );
 });
