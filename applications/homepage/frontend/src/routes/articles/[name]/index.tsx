@@ -26,14 +26,17 @@ export const useDocument = routeLoader$(async ({ params, status }) => {
     .parse(document)
 
   let title = null
+  let description = null
   const frontmatter = mdast.children.find(child => child.type === "yaml") as Yaml | undefined
   if (frontmatter) {
-    const metaValues = load(frontmatter.value) as { title?: string }
+    const metaValues = load(frontmatter.value) as { title: string | null, description: string | null }
     title = metaValues.title
+    description = metaValues.description
   }
 
   return {
     title,
+    description,
     content: document
   }
 })
@@ -75,7 +78,7 @@ export const head: DocumentHead = ({ resolveValue }) => {
     meta: [
       {
         name: "description",
-        content: "awesome articles",
+        content: document.description ? document.description : "素晴らしい記事",
       },
     ]
   }
