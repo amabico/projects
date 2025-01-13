@@ -11,7 +11,7 @@ import { Child } from "./child";
 
 interface MarkdownProps {
   document: string,
-  interactive: boolean
+  interactive?: boolean
 }
 
 export const Markdown = component$<MarkdownProps>(({ document, interactive = true }) => {
