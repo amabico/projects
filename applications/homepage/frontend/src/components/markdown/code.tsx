@@ -3,6 +3,7 @@ import type { Code as CodeNode } from "mdast";
 import { createHighlighterCore } from "shiki/core"
 import { createJavaScriptRegexEngine } from "shiki/engine/javascript"
 import nord from "shiki/themes/nord.mjs"
+import shell from "shiki/langs/shell.mjs"
 import rust from "shiki/langs/rust.mjs"
 
 interface CodeProps {
@@ -15,7 +16,7 @@ export const Code = component$<CodeProps>(({ node }) => {
   useTask$(async () => {
     const highlighter = await createHighlighterCore({
       themes: [nord],
-      langs: [rust],
+      langs: [shell, rust],
       engine: createJavaScriptRegexEngine()
     })
 

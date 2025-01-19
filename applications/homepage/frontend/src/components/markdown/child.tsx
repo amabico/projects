@@ -11,6 +11,8 @@ import { FootnoteDefinition } from "./footnote-definition";
 import { List } from "./list";
 import { ListItem } from "./listItem";
 import { Image } from "./image";
+import { Link } from "./link";
+import { Blockquote } from "./blockquote";
 
 interface ChildProps {
   node: RootContent,
@@ -43,6 +45,10 @@ export const Child = component$<ChildProps>(({ node, interactive, exclude }) => 
       return <FootnoteDefinition node={node} interactive={interactive} />
     case "image":
       return <Image node={node} />
+    case "link":
+      return <Link node={node} interactive={interactive} />
+    case "blockquote":
+      return <Blockquote node={node} interactive={interactive} />
     default:
       return JSON.stringify(node)
   }
