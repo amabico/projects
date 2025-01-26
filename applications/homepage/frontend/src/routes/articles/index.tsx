@@ -54,7 +54,7 @@ export default component$(() => {
             <li class="my-2" key={index}>
               <Link href={ `/articles/${fileName}` }>
                 <h3 class="text-3xl mb-1 line-clamp-1">{ title || fileName }</h3>
-                <div class="line-clamp-3 max-h-22 min-h-22 opacity-70" key={index}>
+                <div class="line-clamp-3 max-h-24 opacity-70 line-clamp-3" key={index}>
                   <Markdown document={document} interactive={false} />
                 </div>
                 <hr class="w-10/12 h-0.5 mx-auto my-4 bg-primary opacity-10 border-1 rounded" />

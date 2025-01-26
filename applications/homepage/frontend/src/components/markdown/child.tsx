@@ -13,6 +13,7 @@ import { ListItem } from "./listItem";
 import { Image } from "./image";
 import { Link } from "./link";
 import { Blockquote } from "./blockquote";
+import { InlineCode } from "./inline-code";
 
 interface ChildProps {
   node: RootContent,
@@ -31,6 +32,8 @@ export const Child = component$<ChildProps>(({ node, interactive, exclude }) => 
       return <Text node={node} />
     case "code":
       return <Code node={node} />
+    case "inlineCode":
+      return <InlineCode node={node} />
     case "inlineMath":
       return <InlineMath node={node} />
     case "yaml":
