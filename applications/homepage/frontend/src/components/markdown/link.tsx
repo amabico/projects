@@ -1,5 +1,4 @@
 import { component$ } from "@builder.io/qwik"
-import { Link as LinkComponent } from "@builder.io/qwik-city";
 import type { Link as LinkNode } from "mdast";
 import { Child } from "./child";
 
@@ -11,9 +10,9 @@ interface LinkProps {
 export const Link = component$<LinkProps>(({ node, interactive }) => {
   if (interactive) {
     return (
-      <LinkComponent href={node.url} class="underline">
+      <a href={node.url} class="underline">
         { node.children.map((child, index) => <Child key={index} node={child} interactive={interactive} />) }
-      </LinkComponent>
+      </a>
     )
   } else {
     return (
