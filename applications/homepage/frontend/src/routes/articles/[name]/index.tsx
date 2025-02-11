@@ -12,18 +12,29 @@ import { load } from "js-yaml"
 import { Markdown } from "~/components/markdown"
 
 const articles = import.meta.glob("../../../articles/**/*.md", { query: "?raw" })
+const fileNames = Object.keys(articles).map(path => path.split("/")[path.split("/").length - 1]).map(file_name => file_name.split(".md")[0])
+fileNames.sort().reverse()
 
 export const useDocument = routeLoader$(async ({ params, status }) => {
-  const filePath = Object.keys(articles).find((path: string) => path.includes(params.name))
-  if (!filePath) {
+  const fileIndex = fileNames.findIndex((path: string) => path.includes(params.name))
+  if (fileIndex < 0) {
     return status(404)
   }
 
-  const document = (await articles[filePath!]() as any).default as string
-  const mdast = await unified()
+  const documents = (await Promise.all(Object.values(articles).map(load => load()))).map((document: any) => document.default) as string[]
+  documents.sort().reverse()
+
+  const mdasts = await Promise.all(documents.map(document => unified()
     .use(remarkParse)
     .use(remarkFrontMatter)
     .parse(document)
+  ))
+
+  const document = documents[fileIndex]
+  const mdast = mdasts[fileIndex]
+
+  const previousFilePath = fileIndex === fileNames.length ? null : fileNames[fileIndex + 1]
+  const nextFilePath = fileIndex === 0 ? null : fileNames[fileIndex - 1]
 
   let title = null
   let description = null
@@ -37,7 +48,9 @@ export const useDocument = routeLoader$(async ({ params, status }) => {
   return {
     title,
     description,
-    content: document
+    content: document,
+    previous: previousFilePath,
+    next: nextFilePath
   }
 })
 
@@ -53,6 +66,19 @@ export default component$(() => {
       <div class="w-4/6">
         { document.value.title && <h1 class="text-5xl mb-8">{document.value.title}</h1> }
         <Markdown document={document.value.content!} />
+        <div class="mt-10 flex justify-between">
+          {
+            document.value.previous
+            ? <a href={`/articles/${document.value.previous}`}>前の記事</a>
+            : <div />
+          }
+          <a href="/articles">記事一覧</a>
+          {
+            document.value.next
+            ? <a href={`/articles/${document.value.next}`}>次の記事</a>
+            : <div />
+          }
+        </div>
       </div>
     </div>
   );
